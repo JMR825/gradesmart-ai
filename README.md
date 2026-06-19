@@ -10,8 +10,8 @@ TO Be added
 
 ## Tech Stack
 
-| Component | Technology | Cost |
-|-----------|-----------|------|
+| Component | Technology |
+|-----------|-----------|
 | Frontend | React (Vite) + Tailwind CSS | 
 | Backend | FastAPI + Python 3.11 | 
 | Database | SQLite (auto-created, max 1000 rows) | 
