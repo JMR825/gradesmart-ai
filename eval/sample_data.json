@@ -1,0 +1,12 @@
+[
+  {"id": 1, "question": "What is the time complexity of binary search?", "student_answer": "O(log n)", "reference_answer": "O(log n)", "human_score": 95},
+  {"id": 2, "question": "Define inheritance in OOP", "student_answer": "A class inherits from another", "reference_answer": "A class acquires properties of another class", "human_score": 85},
+  {"id": 3, "question": "What is a pointer?", "student_answer": "stores memory address", "reference_answer": "A variable storing a memory address", "human_score": 88},
+  {"id": 4, "question": "Difference between TCP and UDP", "student_answer": "TCP is reliable", "reference_answer": "TCP is reliable, UDP is faster but unreliable", "human_score": 70},
+  {"id": 5, "question": "What is a deadlock?", "student_answer": "processes waiting for resources", "reference_answer": "Two or more processes waiting indefinitely for resources held by each other", "human_score": 75},
+  {"id": 6, "question": "Explain the concept of normalization in DBMS", "student_answer": "reducing redundancy", "reference_answer": "Organizing data to reduce redundancy and dependency", "human_score": 80},
+  {"id": 7, "question": "What is a hash table?", "student_answer": "key value store", "reference_answer": "A data structure that maps keys to values using a hash function", "human_score": 78},
+  {"id": 8, "question": "Define SQL", "student_answer": "Structured Query Language", "reference_answer": "Structured Query Language for managing databases", "human_score": 90},
+  {"id": 9, "question": "What is encapsulation?", "student_answer": "binding data and methods", "reference_answer": "Wrapping data and methods into a single unit (class)", "human_score": 82},
+  {"id": 10, "question": "Explain virtual memory", "student_answer": "using disk as RAM", "reference_answer": "A memory management technique using disk space as additional RAM", "human_score": 76}
+]

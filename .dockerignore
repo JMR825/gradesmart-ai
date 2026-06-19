@@ -1,0 +1,11 @@
+.git
+__pycache__
+*.pyc
+.env
+node_modules
+frontend/node_modules
+.vite
+dist
+*.sqlite
+*.db
+README.md
