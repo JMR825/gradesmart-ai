@@ -12,14 +12,13 @@ TO Be added
 
 | Component | Technology | Cost |
 |-----------|-----------|------|
-| Frontend | React (Vite) + Tailwind CSS | $0 |
-| Backend | FastAPI + Python 3.11 | $0 |
-| Database | SQLite (auto-created, max 1000 rows) | $0 |
-| Embeddings | sentence-transformers/all-MiniLM-L6-v2 | $0 |
-| OCR | Tesseract (grayscale + contrast enhancement) | $0 |
-| LLM | Together AI / Hackathon Credits | $0 |
-| Hosting | Hugging Face Spaces (CPU free tier) | $0 |
-| **Total** | | **$0** |
+| Frontend | React (Vite) + Tailwind CSS | 
+| Backend | FastAPI + Python 3.11 | 
+| Database | SQLite (auto-created, max 1000 rows) | 
+| Embeddings | sentence-transformers/all-MiniLM-L6-v2 | 
+| OCR | Tesseract (grayscale + contrast enhancement) | 
+| LLM | Together AI / Hackathon Credits | 
+| Hosting | Hugging Face Spaces (CPU free tier) | 
 
 ## Features
 
