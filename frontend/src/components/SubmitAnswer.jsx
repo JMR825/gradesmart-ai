@@ -25,6 +25,7 @@ export default function SubmitAnswer() {
       setAssessment(a);
       if (a.timer_sec > 0) {
         setTimer(a.timer_sec);
+        if (timerRef.current) clearInterval(timerRef.current);
         timerRef.current = setInterval(() => {
           setTimer((t) => {
             if (t <= 1) { clearInterval(timerRef.current); toast.error("Time's up!"); return 0; }
