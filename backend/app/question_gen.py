@@ -5,16 +5,23 @@ logger = logging.getLogger(__name__)
 
 _LLM_API_URL = os.getenv("LLM_API_URL", "")
 _LLM_API_KEY = os.getenv("LLM_API_KEY", "")
+_SYSTEM_PROMPT = None
 
-_SYSTEM_PROMPT = """You are a quiz question generator. Given a topic and difficulty level, generate a single question with a reference answer.
-Output ONLY valid JSON with no extra text:
-{"question": "...", "reference_answer": "..."}
-Difficulty levels: easy (basic recall), medium (application), hard (analysis/synthesis)."""
+def _load_prompt() -> str:
+    global _SYSTEM_PROMPT
+    if _SYSTEM_PROMPT is None:
+        path = os.path.join(os.path.dirname(__file__), "prompts", "question_gen_system.txt")
+        try:
+            with open(path) as f:
+                _SYSTEM_PROMPT = f.read()
+        except FileNotFoundError:
+            _SYSTEM_PROMPT = "You are a quiz question generator. Given a topic and difficulty level, generate a single question with a reference answer. Output ONLY valid JSON: {\"question\": \"...\", \"reference_answer\": \"...\"}"
+    return _SYSTEM_PROMPT
 
 async def generate_question(topic: str, difficulty: str = "medium") -> dict:
     if not _LLM_API_URL or not _LLM_API_KEY:
         return _fallback_question(topic, difficulty)
-    prompt = f"Topic: {topic}\nDifficulty: {difficulty}\n\nGenerate a question and reference answer in JSON format."
+    prompt = f"Topic: {topic}\nDifficulty: {difficulty}"
     try:
         async with httpx.AsyncClient(timeout=15) as client:
             resp = await client.post(
@@ -22,7 +29,7 @@ async def generate_question(topic: str, difficulty: str = "medium") -> dict:
                 json={
                     "model": os.getenv("LLM_MODEL", "mistralai/Mixtral-8x7B-Instruct-v0.1"),
                     "messages": [
-                        {"role": "system", "content": _SYSTEM_PROMPT},
+                        {"role": "system", "content": _load_prompt()},
                         {"role": "user", "content": prompt},
                     ],
                     "max_tokens": 300, "temperature": 0.7,

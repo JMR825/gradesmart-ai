@@ -36,3 +36,8 @@ Thumbs.db
 *.log
 uvicorn_err.txt
 uvicorn_out.txt
+
+# Training artifacts
+backend/checkpoints/
+backend/app/custom_model/eval/
+compare_models.py

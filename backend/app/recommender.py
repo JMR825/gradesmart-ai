@@ -1,17 +1,28 @@
-import logging, os
+import logging, os, json
+import httpx
 
 logger = logging.getLogger(__name__)
 
 _LLM_API_URL = os.getenv("LLM_API_URL", "")
 _LLM_API_KEY = os.getenv("LLM_API_KEY", "")
+_SYSTEM_PROMPT = None
 
-import httpx
+def _load_prompt() -> str:
+    global _SYSTEM_PROMPT
+    if _SYSTEM_PROMPT is None:
+        path = os.path.join(os.path.dirname(__file__), "prompts", "recommender_system.txt")
+        try:
+            with open(path) as f:
+                _SYSTEM_PROMPT = f.read()
+        except FileNotFoundError:
+            _SYSTEM_PROMPT = "You are a study advisor AI. Given a student's score and mistakes, recommend 2-3 specific study resources."
+    return _SYSTEM_PROMPT
 
 async def recommend_study_resources(score: float, mistakes: list, topic: str = "") -> list:
     if not _LLM_API_URL or not _LLM_API_KEY:
         return _fallback_recommendations(score)
     mistakes_text = "; ".join(mistakes[:5]) if mistakes else "No specific mistakes identified"
-    prompt = f"Student scored {score:.0f}% on '{topic or 'a topic'}'. Mistakes: {mistakes_text}. Recommend 2-3 specific study resources (articles, videos, practice exercises). Return as a JSON array of strings."
+    prompt = f"Student scored {score:.0f}% on '{topic or 'a topic'}'. Mistakes: {mistakes_text}."
     try:
         async with httpx.AsyncClient(timeout=15) as client:
             resp = await client.post(
@@ -19,7 +30,7 @@ async def recommend_study_resources(score: float, mistakes: list, topic: str = "
                 json={
                     "model": os.getenv("LLM_MODEL", "mistralai/Mixtral-8x7B-Instruct-v0.1"),
                     "messages": [
-                        {"role": "system", "content": "You are a helpful tutor. Recommend specific study resources."},
+                        {"role": "system", "content": _load_prompt()},
                         {"role": "user", "content": prompt},
                     ],
                     "max_tokens": 200, "temperature": 0.7,
@@ -28,7 +39,6 @@ async def recommend_study_resources(score: float, mistakes: list, topic: str = "
             )
             resp.raise_for_status()
             text = resp.json()["choices"][0]["message"]["content"].strip()
-            import json
             if "[" in text:
                 text = text[text.index("["):text.rindex("]")+1]
             return json.loads(text) if text.startswith("[") else _fallback_recommendations(score)

@@ -1,14 +1,19 @@
-import functools, hashlib, logging, numpy as np
+import functools, hashlib, logging, os, numpy as np
 from sentence_transformers import SentenceTransformer
 
 logger = logging.getLogger(__name__)
 _model = None
 
+CUSTOM_MODEL_PATH = os.path.join(os.path.dirname(__file__), "custom_model")
+
 def _get_model():
     global _model
     if _model is None:
-        _model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
-        logger.info("Loaded sentence-transformers model")
+        model_name = os.getenv("GRADING_MODEL", "custom")
+        use_custom = model_name == "custom" and os.path.isdir(CUSTOM_MODEL_PATH)
+        path = CUSTOM_MODEL_PATH if use_custom else "sentence-transformers/all-MiniLM-L6-v2"
+        _model = SentenceTransformer(path)
+        logger.info("Loaded grading model: %s (%s)", path, "fine-tuned" if use_custom else "base")
     return _model
 
 def _make_key(a: str, b: str) -> str:
