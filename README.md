@@ -2,7 +2,6 @@
 
 **Auto-grade short answers for Online prep courses.**
 
-Grade 500+ submissions per week using semantic AI + OCR. Save 2.5+ hours/day.
 
 ## Quick Stats
 
